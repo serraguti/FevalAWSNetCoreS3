@@ -14,9 +14,11 @@ namespace FevalAWSNetCoreS3.Controllers
             this.service = service;        
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<string> ficheros =
+                await this.service.GetFilesAsync();
+            return View(ficheros);
         }
 
         //TENDREMOS UNA PAGINA PARA PODER SUBIR LOS FICHEROS.
@@ -40,6 +42,12 @@ namespace FevalAWSNetCoreS3.Controllers
             }
             ViewData["MENSAJE"] = "Fichero subido correctamente a AWS S3";
             return View();
+        }
+
+        public async Task<IActionResult> DeleteFile(string filename)
+        {
+            await this.service.DeleteFileAsync(filename);
+            return RedirectToAction("Index");
         }
     }
 }

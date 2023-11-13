@@ -44,5 +44,24 @@ namespace FevalAWSNetCoreS3.Services
                 return false;
             }
         }
+
+        //METODO PARA LEER TODOS LOS FICHEROS QUE TENGAMOS EN EL BUCKET
+        //LOS FICHEROS DE UN BUCKET VAN POR VERSION, DEBEMOS INDICAR 
+        //QUE DESEAMOS RECUPERAR POR VERSIONES.
+        public async Task<List<string>> GetFilesAsync()
+        {
+            ListVersionsResponse response =
+                await this.ClienteS3.ListVersionsAsync(this.BucketName);
+            //DE DICHAS VERSIONES EXTRAEMOS LA CLAVE (NOMBRE DEL FICHERO)
+            List<string> ficheros =
+                response.Versions.Select(x => x.Key).ToList();
+            return ficheros;
+        }
+
+        public async Task DeleteFileAsync(string fileName)
+        {
+            DeleteObjectResponse response =
+                await this.ClienteS3.DeleteObjectAsync(this.BucketName, fileName);
+        }
     }
 }

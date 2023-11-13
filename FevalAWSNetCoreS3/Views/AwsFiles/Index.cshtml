@@ -1,0 +1,19 @@
+﻿@model List<string>
+
+<h1>AWS S3 Files</h1>
+<ul class="list-group">
+    @foreach (string nombreFichero in Model)
+    {
+        <li class="list-group-item">
+            @nombreFichero
+            <img src="https://bucket-back-paco.s3.amazonaws.com/@nombreFichero"
+            style="width: 150px; height: 150px"/>
+            <a class="btn btn-danger"
+                asp-controller="AwsFiles"
+                asp-action="DeleteFile"
+                asp-route-filename="@nombreFichero">
+                Delete
+            </a>
+        </li>
+    }
+</ul>
